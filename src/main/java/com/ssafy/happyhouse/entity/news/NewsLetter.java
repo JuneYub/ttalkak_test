@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.entity.news;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor @NoArgsConstructor
+@Entity @Table(name = "newsletter")
 public class NewsLetter {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String recipients;
     private String title;

@@ -21,11 +21,11 @@ public enum MemberType {
     }
 
     public static boolean isMemberType(String type){
-
-        List<MemberType> list = Arrays.stream(MemberType.values())
-                .filter(memberType -> memberType.name().equals(type))
-                .collect(Collectors.toList());
-
-        return list.size() != 0;
+        try {
+            MemberType.valueOf(type.toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }

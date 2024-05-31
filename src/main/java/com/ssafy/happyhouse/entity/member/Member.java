@@ -2,7 +2,7 @@ package com.ssafy.happyhouse.entity.member;
 
 import com.ssafy.happyhouse.entity.member.constant.MemberType;
 import com.ssafy.happyhouse.entity.member.constant.Role;
-import com.ssafy.happyhouse.global.token.JwtTokenDto;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Validated
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name = "members")
 public class Member {
 
-    @NotNull
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

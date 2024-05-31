@@ -1,6 +1,7 @@
 package com.ssafy.happyhouse.entity.chat;
 
 import com.ssafy.happyhouse.entity.member.Member;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,16 +9,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter @NoArgsConstructor
+@Entity @Table(name = "room")
 public class Room {
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Status status;
 
     private LocalDateTime entiredTime;
 
+    @ManyToOne
+    @JoinColumn(name = "expert_id")
     private Member expert;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Builder

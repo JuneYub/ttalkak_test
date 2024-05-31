@@ -2,11 +2,8 @@ package com.ssafy.happyhouse.entity.chat;
 
 import lombok.*;
 
-@Getter @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Setter
+@Data @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class Chat {
 
     private String message; // 메시지 내용

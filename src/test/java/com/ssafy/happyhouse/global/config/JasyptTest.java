@@ -11,14 +11,14 @@ public class JasyptTest {
     @Test
     public void jasyptTest(){
 
-        String password = "";
+        String password = "PASSWORD";
 
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         encryptor.setPoolSize(4);
         encryptor.setPassword(password);
         encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
 
-        String content = "";
+        String content = "token";
         String encryptedContent = encryptor.encrypt(content);
         String decryptedContent = encryptor.decrypt(encryptedContent);
 

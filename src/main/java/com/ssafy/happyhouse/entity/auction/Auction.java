@@ -1,14 +1,14 @@
 package com.ssafy.happyhouse.entity.auction;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+@Getter @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name = "auctions")
 public class Auction {
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String court;
     private String productUsage;

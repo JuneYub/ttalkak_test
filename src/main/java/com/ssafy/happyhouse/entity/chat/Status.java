@@ -22,10 +22,11 @@ public enum Status {
 
     public static boolean isStatus(String status) {
 
-        List<Status> list = Arrays.stream(Status.values())
-                .filter(st -> st.name().equals(status))
-                .collect(Collectors.toList());
-
-        return list.size() != 0;
+        try {
+            Status.valueOf(status.toUpperCase());
+            return true;
+        } catch(IllegalArgumentException e) {
+            return false;
+        }
     }
 }

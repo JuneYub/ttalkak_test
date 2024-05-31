@@ -9,8 +9,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Getter
 @Validated
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class House {
 
     @NotNull
