@@ -2,7 +2,11 @@ package com.ssafy.happyhouse.service;
 
 import com.ssafy.happyhouse.dto.board.BoardDto;
 import com.ssafy.happyhouse.entity.board.Board;
+import com.ssafy.happyhouse.entity.board.BoardEditor;
+import com.ssafy.happyhouse.global.error.ErrorCode;
+import com.ssafy.happyhouse.global.error.exception.EntityNotFoundException;
 import com.ssafy.happyhouse.mapper.BoardMapper;
+import com.ssafy.happyhouse.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,51 +14,61 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BoardService {
 
-    private final BoardMapper boardMapper;
+    private final BoardRepository boardRepository;
 
     public List<Board> findAll() {
 
-        return boardMapper.findAll();
+        return boardRepository.findAll();
     }
 
     public Board findById(Long id) {
 
-        return boardMapper.findById(id);
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_BOARD));
+
+        return board;
     }
 
     @Transactional
     public void writeBoard(BoardDto.Write dto){
 
-        Map<String, String> map = new HashMap<>();
+        Board board = Board.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .author(dto.getAuthor())
+                .build();
 
-        map.put("title", dto.getTitle());
-        map.put("content", dto.getContent());
-        map.put("author", dto.getAuthor());
-
-        boardMapper.writeBoard(map);
+        boardRepository.save(board);
     }
 
     @Transactional
     public void updateBoard(BoardDto.Update dto, Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_BOARD));
 
-        Map<String, Object> map = new HashMap<>();
+        BoardEditor.BoardEditorBuilder boardEditorBuilder = board.toEditorBuilder();
 
-        map.put("title", dto.getTitle());
-        map.put("content", dto.getContent());
-        map.put("id", id);
+        BoardEditor boardEditor = boardEditorBuilder
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .build();
 
-        boardMapper.updateBoard(map);
+        board.edit(boardEditor);
     }
 
     @Transactional
     public void deleteBoard(Long id) {
 
-        boardMapper.deleteBoard(id);
+        Board board = boardRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_BOARD));
+
+        boardRepository.delete(board);
     }
 }

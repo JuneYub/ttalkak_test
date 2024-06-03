@@ -12,7 +12,4 @@ import java.util.List;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, String> {
 
-    @Query("SELECT s FROM Store s")
-    List<Store> findAll();
-
 }

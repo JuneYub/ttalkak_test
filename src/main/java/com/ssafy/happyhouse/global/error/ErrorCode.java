@@ -29,6 +29,9 @@ public enum ErrorCode {
     ALREADY_REGISTERED_USERNAME(HttpStatus.BAD_REQUEST, "이미 가입된 아이디입니다."),
     ALREADY_REGISTERED_EMAIL(HttpStatus.BAD_REQUEST, "이미 가입된 Email 입니다."),
 
+    // 공지사항
+    NOT_EXISTS_BOARD(HttpStatus.NOT_FOUND, "해당 글은 존재하지 않습니다.");
+
     // 주택
     NOT_EXISTS_HOUSE(HttpStatus.NOT_FOUND, "조건에 맞는 주택 정보가 없습니다."),
 
