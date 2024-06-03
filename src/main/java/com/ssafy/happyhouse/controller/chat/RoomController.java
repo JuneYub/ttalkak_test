@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.controller.chat;
 
+import com.ssafy.happyhouse.dto.room.RoomDto;
 import com.ssafy.happyhouse.service.chat.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,13 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping("/joined/{memberId}")
-    public ResponseEntity<List<Map<String, Object>>> joinList(@PathVariable("memberId") Long memberId){
+    public ResponseEntity<List<RoomDto.Detail>> joinList(@PathVariable("memberId") Long memberId){
 
         return ResponseEntity.ok(roomService.findByMemberId(memberId));
     }
 
     @GetMapping("/joined/expert/{expertId}")
-    public ResponseEntity<List<Map<String, Object>>> joinListByExpertId(@PathVariable("expertId") Long expertId){
+    public ResponseEntity<List<RoomDto.Detail>> joinListByExpertId(@PathVariable("expertId") Long expertId){
 
         return ResponseEntity.ok(roomService.findByExpertId(expertId));
     }

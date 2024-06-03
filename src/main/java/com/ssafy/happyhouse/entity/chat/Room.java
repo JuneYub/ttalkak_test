@@ -16,6 +16,7 @@ public class Room {
 
     private Status status;
 
+    @Column(name = "entired_time")
     private LocalDateTime entiredTime;
 
     @ManyToOne
