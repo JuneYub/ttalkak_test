@@ -1,14 +1,13 @@
 package com.ssafy.happyhouse.service;
 
-import com.ssafy.happyhouse.mapper.StoreMapper;
-import com.ssafy.happyhouse.redis.entity.Store;
+import com.ssafy.happyhouse.entity.store.Store;
+import com.ssafy.happyhouse.repository.DongCodeRepository;
+import com.ssafy.happyhouse.repository.StoreRepository;
 import com.ssafy.happyhouse.request.AddressName;
 import com.ssafy.happyhouse.request.StoreCondition;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,8 @@ import java.util.stream.Collectors;
 public class StoreService {
 
     private final LettuceConnectionFactory connectionFactory;
-    private final StoreMapper storeMapper;
+    private final DongCodeRepository dongCodeRepository;
+    private final StoreRepository storeRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
     private static final String STORE_KEY_PREFIX = "store:";
@@ -54,7 +54,7 @@ public class StoreService {
      * Redis에 상가 분석 데이터를 set을 활용해 저장
      */
     public void loadDataFromMysqlToRedis() {
-        List<Store> stores = storeMapper.findALl();
+        List<Store> stores = storeRepository.findAll();
 
         for(Store store : stores) {
             // 필요한 데이터 설정
@@ -93,7 +93,7 @@ public class StoreService {
     public List<Store> getStoresByDong(AddressName addressName) {
 
         // 동코드를 받아온다.
-        String dongCode = storeMapper.findDongCodeByDongName(addressName);
+        String dongCode = dongCodeRepository.findDongCodeByDongName(addressName.getGugunName(), addressName.getDongName());
 
         // redis에서 현재 지역의 상점 id를 가져온다.
         Set<String> storeIds = getStoreIdsByDongCode(dongCode);
@@ -115,7 +115,7 @@ public class StoreService {
 
         AddressName addressName = (AddressName) storeCondition;
         // 동코드를 받아온다.
-        String dongCode = storeMapper.findDongCodeByDongName(addressName);
+        String dongCode = dongCodeRepository.findDongCodeByDongName(addressName.getGugunName(), addressName.getDongName());
 
         // 상업 분류 코드
         List<String> categoryOptionList = storeCondition.selectedOptions();

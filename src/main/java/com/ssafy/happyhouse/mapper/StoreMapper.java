@@ -11,5 +11,5 @@ public interface StoreMapper {
 
     List<Store> findALl();
 
-    String findDongCodeByDongName(AddressName addressName);
+    Store findDongCodeByDongName(AddressName addressName);
 }

@@ -9,7 +9,7 @@ import lombok.*;
 @Entity @Table(name = "auctions")
 public class Auction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String court;
     private String productUsage;
     private String location;
