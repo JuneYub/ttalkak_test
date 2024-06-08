@@ -1,19 +1,19 @@
 package com.ssafy.happyhouse.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.checkerframework.checker.units.qual.N;
 
 @Getter
-@AllArgsConstructor
+@Builder
+@AllArgsConstructor @NoArgsConstructor
 public class MapMarkerInfo {
 
-    private final String aptCode;
-    private final String dealAmount;
-    private final String exclusiveArea;
-    private final String dealDate;
-    private final String apartmentName;
-    private final Double lng;
-    private final Double lat;
+    private String aptCode;
+    private String dealAmount;
+    private String exclusiveArea;
+    private String dealDate;
+    private String apartmentName;
+    private Double lng;
+    private Double lat;
 
 }

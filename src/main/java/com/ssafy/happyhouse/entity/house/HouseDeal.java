@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.entity.house;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,14 +10,17 @@ import javax.validation.constraints.NotNull;
 
 @Getter @Builder
 @NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name = "housedeal")
 public class HouseDeal {
 
-    @NotNull
-    private Long aptCode;
+    @Id
+    private Long no;
+
+    @ManyToOne
+    @JoinColumn(name = "aptCode")
+    private HouseInfo houseInfo;
 
     private String dealAmount;
-
-    private Integer buildYear;
 
     private String dealYear;
 
@@ -24,18 +28,10 @@ public class HouseDeal {
 
     private String dealDay;
 
-    private String dealDate;
+    private Double area;
 
-    private String roadName;
+    private String floor;
 
-    private String dongCode;
-
-    private String apartmentName;
-
-    private Double exclusiveArea;
-
-    private String jibun;
-
-    private Integer floor;
+    private String cancelDealType;
 
 }

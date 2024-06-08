@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.controller.house;
 
+import com.ssafy.happyhouse.dto.house.HouseDetailDto;
 import com.ssafy.happyhouse.entity.house.HouseDeal;
 import com.ssafy.happyhouse.request.AddressName;
 import com.ssafy.happyhouse.response.MapGugunMarkerInfo;
@@ -28,7 +29,7 @@ public class HouseController {
     @GetMapping("/list/code/{code}")
     public ResponseEntity<?> findApartListByDongCode(@PathVariable("code") String dongCode){
 
-        List<HouseDeal> findList = houseService.findHouseDealByDongCode(dongCode);
+        List<HouseDetailDto.ByDong> findList = houseService.findHouseDealByDongCode(dongCode);
 
         if (findList.isEmpty())
             return ResponseEntity.ok(Collections.emptyList());
@@ -44,7 +45,7 @@ public class HouseController {
     @GetMapping("/list/name/{name}")
     public ResponseEntity<?> findApartListByName(@PathVariable("name") String apartName) {
 
-        List<HouseDeal> findList = houseService.findHouseDealByName(apartName);
+        List<HouseDetailDto.ByAptName> findList = houseService.findHouseDealByName(apartName);
 
         if (findList.isEmpty())
             return ResponseEntity.ok(Collections.emptyList());
@@ -73,7 +74,7 @@ public class HouseController {
     @GetMapping("/detail/{code}")
     public ResponseEntity<?> findDetail(@PathVariable("code") Long aptCode){
 
-        List<HouseDeal> findDetail = houseService.findHouseDealByAptCode(aptCode);
+        List<HouseDetailDto.ByAptcode> findDetail = houseService.findHouseDealByAptCode(aptCode);
 
         if (findDetail.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

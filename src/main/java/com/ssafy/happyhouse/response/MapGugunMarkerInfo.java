@@ -2,13 +2,16 @@ package com.ssafy.happyhouse.response;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@Builder
+@AllArgsConstructor @NoArgsConstructor
 public class MapGugunMarkerInfo {
-    private final String gugunName;
-    private final String avgDealAmount;
-    private final Double lng;
-    private final Double lat;
+    private String gugunName;
+    private String avgDealAmount;
+    private Double lng;
+    private Double lat;
 }
