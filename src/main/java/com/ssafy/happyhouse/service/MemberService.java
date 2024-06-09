@@ -29,7 +29,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberMapper memberMapper;
     private final MemberRepository memberRepository;
 
     public void validUsername(String username){
