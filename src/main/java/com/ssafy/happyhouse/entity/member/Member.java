@@ -52,10 +52,10 @@ public class Member {
 
     private LocalDateTime refreshTokenExpirationTime;
 
-    private Boolean isSubscribed;
+    private int isSubscribed;
 
     @Builder
-    public Member(Long id, String username, String email, String password, String nickname, Role role, MemberType memberType, String profile, Integer price, boolean isSubscribed) {
+    public Member(Long id, String username, String email, String password, String nickname, Role role, MemberType memberType, String profile, Integer price, int isSubscribed) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -72,5 +72,9 @@ public class Member {
         this.username = memberEditor.getUsername();
         this.email = memberEditor.getEmail();
         this.password = memberEditor.getPassword();
+    }
+
+    public void updateSubscribed(MemberEditor memberEditor) {
+        this.isSubscribed = memberEditor.getIsSubscribed();
     }
 }

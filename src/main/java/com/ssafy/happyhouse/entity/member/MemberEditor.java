@@ -8,11 +8,13 @@ public class MemberEditor {
     private String username;
     private String password;
     private String email;
+    private int isSubscribed;
 
     @Builder
-    public MemberEditor(String username, String password, String email) {
+    public MemberEditor(String username, String password, String email, int isSubscribed) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.isSubscribed  = isSubscribed;
     }
 }

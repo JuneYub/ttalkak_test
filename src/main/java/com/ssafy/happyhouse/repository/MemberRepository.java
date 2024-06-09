@@ -36,5 +36,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Member m SET m.refreshTokenExpirationTime = :now WHERE m.id = :id")
     void expireToken(@Param("id") Long id, @Param("now") LocalDateTime now);
 
+    @Query("SELECT m.email FROM Member m WHERE m.isSubscribed = 1")
+    List<String> findRecipients();
+
+    @Query("SELECT m.isSubscribed FROM Member m WHERE m.id = :memberId")
+    int checkIsSubscribed(@Param("memberId") Long memberId);
 
 }

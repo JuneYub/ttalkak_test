@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity @Table(name = "newsletter")
 public class NewsLetter {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String recipients;
     private String title;
     private String content;

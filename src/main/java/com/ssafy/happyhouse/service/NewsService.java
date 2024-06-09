@@ -1,10 +1,15 @@
 package com.ssafy.happyhouse.service;
 
 import com.ssafy.happyhouse.dto.board.BoardDto;
+import com.ssafy.happyhouse.entity.member.Member;
+import com.ssafy.happyhouse.entity.member.MemberEditor;
 import com.ssafy.happyhouse.entity.news.News;
 import com.ssafy.happyhouse.entity.news.NewsLetter;
-import com.ssafy.happyhouse.global.common.GoogleMail;
-import com.ssafy.happyhouse.mapper.NewsMapper;
+import com.ssafy.happyhouse.global.error.ErrorCode;
+import com.ssafy.happyhouse.global.error.exception.EntityNotFoundException;
+import com.ssafy.happyhouse.repository.MemberRepository;
+import com.ssafy.happyhouse.repository.NewsLetterRepository;
+import com.ssafy.happyhouse.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,8 +28,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NewsService {
 
-    private final NewsMapper newsMapper;
+    private final NewsRepository newsRepository;
+    private final NewsLetterRepository newsLetterRepository;
+    private final MemberRepository memberRepository;
     private final RestTemplate restTemplate = new RestTemplate();
+
 
     @Value("${openai.api.key}")
     private String apiKey;
@@ -33,8 +42,8 @@ public class NewsService {
      * @return
      */
     public List<News> getRelatedNews() {
-
-        return newsMapper.getRelatedNews();
+        LocalDate today = LocalDate.now();
+        return newsRepository.findRelatedNews(today);
     }
 
     /**
@@ -91,7 +100,7 @@ public class NewsService {
      */
     @Transactional
     public void sendNewsLetter(BoardDto.Write dto) {
-        List<String> recipients = newsMapper.getRecipients();
+        List<String> recipients = memberRepository.findRecipients();
 
         NewsLetter newsLetter = NewsLetter.builder()
                 .recipients(String.join(",", recipients))
@@ -99,12 +108,26 @@ public class NewsService {
                 .content(dto.getContent())
                 .build();
 
-        newsMapper.writeNewsLetter(newsLetter);
+        newsLetterRepository.save(newsLetter);
 
     }
 
+    /**
+     * 구독 취소
+     * @param orgEmail
+     */
     public void unsubscribe(String orgEmail) {
-        newsMapper.unsubscribe(orgEmail);
+
+        Member member = memberRepository.findByEmail(orgEmail)
+                        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        MemberEditor.MemberEditorBuilder memberEditorBuilder = MemberEditor.builder();
+
+        MemberEditor memberEditor = memberEditorBuilder
+                .isSubscribed(0)
+                        .build();
+
+        member.updateSubscribed(memberEditor);
     }
 
     /**
@@ -112,7 +135,8 @@ public class NewsService {
      * @param memberId
      */
     public int checkSubscribe(Long memberId) {
-        return newsMapper.checkSubscribe(memberId);
+
+        return memberRepository.checkIsSubscribed(memberId);
     }
 
     /**
@@ -120,6 +144,16 @@ public class NewsService {
      * @param memberId
      */
     public void updateIssubscribe(Long memberId) {
-        newsMapper.updateIsSubscribe(memberId);
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+
+        MemberEditor.MemberEditorBuilder memberEditorBuilder = MemberEditor.builder();
+
+        MemberEditor memberEditor = memberEditorBuilder
+                .isSubscribed(1)
+                .build();
+
+        member.updateSubscribed(memberEditor);
     }
 }
