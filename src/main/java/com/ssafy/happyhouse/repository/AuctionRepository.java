@@ -16,5 +16,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
             "FROM auctions WHERE CONCAT(SUBSTRING(dong_code, 1, 5), '00000') = :gugunCode", nativeQuery = true)
     List<Auction> getAuctionsByGuGunCode(@Param("gugunCode") String gugunCode);
 
-    Auction getAuctionById(Long id);
+    @Query("SELECT a FROM Auction a WHERE a.lng IS NULL")
+    List<Auction> findAuctionsByLngIsNull();
+
 }

@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class NewsCrawling {
                         .newsTitle(titleElement.text())
                         .newsLink(titleElement.attr("href"))
                         .newsContent(newsContent.text())
+                        .newsDate(LocalDate.now())
                         .build();
 
                 news.add(newData);

@@ -18,4 +18,8 @@ public class NewsLetter {
     private String content;
     private String sendDate;
     private int isSend;
+
+    public void updateIsSendStatus() {
+        this.isSend = 1;
+    }
 }

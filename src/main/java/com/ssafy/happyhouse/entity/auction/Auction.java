@@ -24,4 +24,12 @@ public class Auction {
     private String lng;
     private String lat;
 
+    public void updateLocation(AuctionEditor auctionEditor) {
+        this.lat = auctionEditor.getLat();
+        this.lng = auctionEditor.getLng();
+        this.sido = auctionEditor.getSido();
+        this.gugun = auctionEditor.getGugun();
+        this.dong = auctionEditor.getDong();
+    }
+
 }

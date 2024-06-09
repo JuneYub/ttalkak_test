@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @Builder
 @NoArgsConstructor @AllArgsConstructor
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class News {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String newsDate;
+    private LocalDate newsDate;
     private String newsTitle;
     private String newsLink;
     private String newsContent;

@@ -1,6 +1,8 @@
 package com.ssafy.happyhouse.service;
 
 import com.ssafy.happyhouse.entity.auction.Auction;
+import com.ssafy.happyhouse.global.error.ErrorCode;
+import com.ssafy.happyhouse.global.error.exception.EntityNotFoundException;
 import com.ssafy.happyhouse.mapper.AuctionMapper;
 import com.ssafy.happyhouse.mapper.StoreMapper;
 import com.ssafy.happyhouse.repository.AuctionRepository;
@@ -30,6 +32,7 @@ public class AuctionService {
     }
 
     public Auction getAuctionById(Long id) {
-        return auctionRepository.getAuctionById(id);
+        return auctionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_EXISTS_AUCTION));
     }
 }

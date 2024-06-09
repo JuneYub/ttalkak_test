@@ -39,8 +39,10 @@ public enum ErrorCode {
     NOT_EXISTS_HOUSE(HttpStatus.NOT_FOUND, "조건에 맞는 주택 정보가 없습니다."),
 
     // 카카오맵
-    NO_MARKER(HttpStatus.NO_CONTENT, "마커가 존재하지 않습니다.")
-    ;
+    NO_MARKER(HttpStatus.NO_CONTENT, "마커가 존재하지 않습니다."),
+
+    // 경매정보
+    NOT_EXISTS_AUCTION(HttpStatus.NOT_FOUND, "경매 정보가 존재하지 않습니다.");
 
     ErrorCode(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
