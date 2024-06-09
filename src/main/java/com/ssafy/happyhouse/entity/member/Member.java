@@ -50,7 +50,7 @@ public class Member {
     @Size(max = 500)
     private String refreshToken;
 
-    private LocalDateTime tokenExpirationTime;
+    private LocalDateTime refreshTokenExpirationTime;
 
     private Boolean isSubscribed;
 
@@ -66,5 +66,11 @@ public class Member {
         this.profile = profile;
         this.price = price;
         this.isSubscribed = isSubscribed;
+    }
+
+    public void updateMember (MemberEditor memberEditor) {
+        this.username = memberEditor.getUsername();
+        this.email = memberEditor.getEmail();
+        this.password = memberEditor.getPassword();
     }
 }

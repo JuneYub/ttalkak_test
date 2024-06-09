@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.service;
 
 import com.ssafy.happyhouse.dto.member.MemberDto;
 import com.ssafy.happyhouse.entity.member.Member;
+import com.ssafy.happyhouse.entity.member.MemberEditor;
 import com.ssafy.happyhouse.entity.member.constant.MemberType;
 import com.ssafy.happyhouse.entity.member.constant.Role;
 import com.ssafy.happyhouse.global.error.ErrorCode;
@@ -9,9 +10,9 @@ import com.ssafy.happyhouse.global.error.exception.BusinessException;
 import com.ssafy.happyhouse.global.error.exception.EntityNotFoundException;
 import com.ssafy.happyhouse.global.token.JwtTokenDto;
 import com.ssafy.happyhouse.mapper.MemberMapper;
+import com.ssafy.happyhouse.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,32 +30,20 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberMapper memberMapper;
+    private final MemberRepository memberRepository;
 
     public void validUsername(String username){
 
-        Optional<Member> findMember = memberMapper.findByUsername(username);
+        Optional<Member> findMember = memberRepository.findByUsername(username);
 
         if (findMember.isPresent())
             throw new BusinessException(ErrorCode.ALREADY_REGISTERED_USERNAME);
     }
 
-    public Member findByUsername(String username) {
-
-        return memberMapper.findByUsername(username)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ALREADY_REGISTERED_USERNAME));
-    }
-
-    public void validEmail(String email){
-
-        Optional<Member> findByEmail = memberMapper.findByEmail(email);
-
-        if (findByEmail.isPresent())
-            throw new BusinessException(ErrorCode.ALREADY_REGISTERED_USERNAME);
-    }
 
     public List<Member> findAll() {
 
-        List<Member> findAll = memberMapper.findAll();
+        List<Member> findAll = memberRepository.findAll();
 
         if (findAll.isEmpty())
             throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS);
@@ -64,40 +53,30 @@ public class MemberService {
 
     public Member findByUsernameAndPassword(String username, String password){
 
-        Map<String, String> map = new HashMap<>();
-
-        map.put("username", username);
-        map.put("password", password);
-
-        Member findMember = memberMapper.findByUsernameAndPassword(map);
-
-        if (findMember == null)
-            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS);
+        Member findMember = memberRepository.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
 
         return findMember;
     }
 
     public Member findById(Long id){
 
-        Member findMember = memberMapper.findById(id);
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
 
         return findMember;
     }
 
     public Member findByEmail(String email){
 
-        try {
-            return memberMapper.findByEmail(email).orElse(null);
-        } catch (MyBatisSystemException e) {
-            // 로그 등을 남기고 null 반환
-            System.err.println("MyBatisSystemException 발생: " + e.getMessage());
-            return null;
-        }
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
+
     }
 
     public List<Member> findExpertList() {
 
-        return memberMapper.findExpertList();
+        return memberRepository.findExpertList();
     }
 
     @Transactional
@@ -117,7 +96,7 @@ public class MemberService {
                 .profile("https://api.dicebear.com/8.x/pixel-art/svg?seed="+dto.getUsername())
                 .build();
 
-        memberMapper.join(joinMember);
+        memberRepository.save(joinMember);
     }
 
     @Transactional
@@ -131,32 +110,35 @@ public class MemberService {
         log.info("Join Member Type : {}", member.getMemberType());
         log.info("Join Member NickName : {}", member.getNickname());
 
-        memberMapper.oauthJoin(member);
+        memberRepository.save(member);
     }
 
     @Transactional
     public void updateMember(MemberDto.Update dto){
 
-        Map<String, Object> updateMap = new HashMap<>();
+        Member member = memberRepository.findByUsername(dto.getUsername())
+                        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
 
-        updateMap.put("username", dto.getUsername());
-        updateMap.put("password", dto.getPassword());
-        updateMap.put("email", dto.getEmail());
+        MemberEditor.MemberEditorBuilder memberEditorBuilder = MemberEditor.builder();
 
-        memberMapper.update(updateMap);
+        MemberEditor memberEditor = memberEditorBuilder
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .email(dto.getEmail())
+                .build();
+
+        member.updateMember(memberEditor);
     }
 
     @Transactional
     public void deleteMember(Long id){
 
-        memberMapper.delete(id);
+        memberRepository.deleteById(id);
     }
     public Member findMemberByRefreshToken(String refreshToken){
 
-        Member findMember = memberMapper.findMemberByRefreshToken(refreshToken);
-
-        if (findMember == null)
-            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS);
+        Member findMember = memberRepository.findMemberByRefreshToken(refreshToken)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXISTS));
 
         return findMember;
     }
@@ -167,23 +149,12 @@ public class MemberService {
         String refreshToken = token.getRefreshToken();
         LocalDateTime refreshTokenExpireTime = token.getRefreshTokenExpireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("id", id);
-        map.put("refreshToken", refreshToken);
-        map.put("refreshTokenExpireTime", refreshTokenExpireTime);
-
-        memberMapper.updateToken(map);
+        memberRepository.updateToken(id, refreshToken, refreshTokenExpireTime);
     }
 
     @Transactional
     public void expireToken(Long id, LocalDateTime now) {
 
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("id", id);
-        map.put("now", now);
-
-        memberMapper.expireToken(map);
+        memberRepository.expireToken(id, now);
     }
 }

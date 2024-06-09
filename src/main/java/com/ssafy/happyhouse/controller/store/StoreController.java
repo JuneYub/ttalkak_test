@@ -1,7 +1,6 @@
 package com.ssafy.happyhouse.controller.store;
 
-import com.ssafy.happyhouse.redis.entity.Store;
-import com.ssafy.happyhouse.request.AddressName;
+import com.ssafy.happyhouse.entity.store.Store;
 import com.ssafy.happyhouse.request.StoreCondition;
 import com.ssafy.happyhouse.service.StoreService;
 import lombok.RequiredArgsConstructor;

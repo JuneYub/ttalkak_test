@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HouseService {
 
-    private final HouseMapper houseMapper;
     private final HouseRepository houseRepository;
     private final HouseDealRepository houseDealRepository;
 
