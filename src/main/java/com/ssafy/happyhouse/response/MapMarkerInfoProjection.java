@@ -1,10 +1,12 @@
 package com.ssafy.happyhouse.response;
 
+import java.sql.Date;
+
 public interface MapMarkerInfoProjection {
-    String getAptCode();
+    Long getAptCode();
     String getDealAmount();
-    String getExclusiveArea();
-    String getDealDate();
+    Double getExclusiveArea();
+    Date getDealDate();
     String getApartmentName();
     Double getLng();
     Double getLat();

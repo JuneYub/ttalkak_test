@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.controller.auction;
 
+import com.ssafy.happyhouse.dto.auction.AuctionProjection;
 import com.ssafy.happyhouse.entity.auction.Auction;
 import com.ssafy.happyhouse.request.AddressName;
 import com.ssafy.happyhouse.service.AuctionService;
@@ -20,7 +21,7 @@ public class AuctionController {
     @GetMapping("/list")
     public ResponseEntity<?> findAuctionsByDongCode(@ModelAttribute AddressName addressName) {
 
-        List<Auction> auctions = auctionService.getAuctionsByGuGunCode(addressName);
+        List<AuctionProjection> auctions = auctionService.getAuctionsByGuGunCode(addressName);
         return ResponseEntity.ok(auctions);
     }
 

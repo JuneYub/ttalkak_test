@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.service;
 
+import com.ssafy.happyhouse.dto.auction.AuctionProjection;
 import com.ssafy.happyhouse.entity.auction.Auction;
 import com.ssafy.happyhouse.global.error.ErrorCode;
 import com.ssafy.happyhouse.global.error.exception.EntityNotFoundException;
@@ -22,13 +23,12 @@ public class AuctionService {
     private final DongCodeRepository dongCodeRepository;
     private final AuctionRepository auctionRepository;
 
-    public List<Auction> getAuctionsByGuGunCode(AddressName addressName) {
+    public List<AuctionProjection> getAuctionsByGuGunCode(AddressName addressName) {
 
         String dongCode = dongCodeRepository.findDongCodeByDongName(addressName.getGugunName(), addressName.getDongName());
         String gugunCode = dongCode.substring(0,5) + "00000";
 
-        List<Auction> tmp = auctionRepository.getAuctionsByGuGunCode(gugunCode);
-        return tmp;
+        return auctionRepository.getAuctionsByGuGunCode(gugunCode);
     }
 
     public Auction getAuctionById(Long id) {

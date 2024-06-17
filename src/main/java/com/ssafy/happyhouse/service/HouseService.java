@@ -74,10 +74,10 @@ public class HouseService {
 
         return projections.stream()
                 .map(projection -> MapMarkerInfo.builder()
-                        .aptCode(projection.getAptCode())
+                        .aptCode(String.valueOf(projection.getAptCode()))
                         .dealAmount(projection.getDealAmount())
-                        .exclusiveArea(projection.getExclusiveArea())
-                        .dealDate(projection.getDealDate())
+                        .exclusiveArea(String.valueOf(projection.getExclusiveArea()))
+                        .dealDate(String.valueOf(projection.getDealDate()))
                         .apartmentName(projection.getApartmentName())
                         .lng(projection.getLng())
                         .lat(projection.getLat())

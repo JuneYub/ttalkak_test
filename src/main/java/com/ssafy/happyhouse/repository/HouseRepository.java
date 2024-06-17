@@ -39,10 +39,10 @@ public interface HouseRepository extends JpaRepository<HouseInfo, Long> {
             "hd.floor, " +
             "CONCAT(b.dongName, ' ', a.jibun), " +
             "CONCAT(b.sidoName, ' ', b.gugunName, ' ', b.dongName, ' ', a.roadName), " +
-            "(hd.area / 3.3057), " +
-            "DATE(CONCAT(hd.dealYear, '-', LPAD(hd.dealMonth, 2, '0'), '-', hd.dealDay))) " +
+            "CAST(DATE(CONCAT(hd.dealYear, '-', LPAD(hd.dealMonth, 2, '0'), '-', hd.dealDay)) AS LocalDate), " +
+            "(hd.area / 3.3057)) " +
             "FROM HouseInfo a JOIN a.houseDeals hd JOIN DongCode b ON a.dongCode = b.dongCode " +
-            "WHERE a.aptCode = :aptCode ORDER BY DATE(CONCAT(hd.dealYear, '-', LPAD(hd.dealMonth, 2, '0'), '-', hd.dealDay)) DESC")
+            "WHERE a.aptCode = :aptCode ORDER BY CAST(DATE(CONCAT(hd.dealYear, '-', LPAD(hd.dealMonth, 2, '0'), '-', hd.dealDay)) AS LocalDate) DESC")
     List<HouseDetailDto.ByAptcode> findHouseDetailByAptCode(@Param("aptCode") Long aptCode);
 
 
@@ -56,41 +56,41 @@ public interface HouseRepository extends JpaRepository<HouseInfo, Long> {
     List<HouseDetailDto.ByAptName> findHouseDetailByAptName(@Param("apartmentName") String apartmentName);
 
     @Query(value = "WITH RankedData AS (" +
-            "  SELECT aptCode, " +
-            "         dealAmount, " +
-            "         exclusiveArea, " +
-            "         dealDate, " +
-            "         apartmentName, " +
+            "  SELECT apt_code, " +
+            "         deal_amount, " +
+            "         exclusive_area, " +
+            "         deal_date, " +
+            "         apartment_name, " +
             "         lng, " +
             "         lat, " +
-            "         ROW_NUMBER() OVER (PARTITION BY aptCode ORDER BY dealDate DESC) AS rn " +
+            "         ROW_NUMBER() OVER (PARTITION BY apt_code ORDER BY deal_date DESC) AS rn " +
             "  FROM ( " +
-            "         SELECT a.aptCode, " +
-            "                REPLACE(a.dealAmount, ',', '') / 10000 AS dealAmount, " +
-            "                (a.area / 3.3057) AS exclusiveArea, " +
-            "                DATE(CONCAT(a.dealYear, '-', LPAD(a.dealMonth, 2, '0'), '-', a.dealDay)) AS dealDate, " +
-            "                b.apartmentName, " +
+            "         SELECT a.apt_code, " +
+            "                REPLACE(a.deal_amount, ',', '') / 10000 AS deal_amount, " +
+            "                (a.area / 3.3057) AS exclusive_area, " +
+            "                DATE(CONCAT(a.deal_year, '-', LPAD(a.deal_month, 2, '0'), '-', a.deal_day)) AS deal_date, " +
+            "                b.apartment_name, " +
             "                b.lng, " +
             "                b.lat " +
             "           FROM housedeal a " +
             "           RIGHT OUTER JOIN ( " +
-            "                            SELECT aptCode, apartmentName, lng, lat " +
+            "                            SELECT apt_code, apartment_name, lng, lat " +
             "                              FROM houseInfo " +
-            "                             WHERE dongCode = ( " +
-            "                                                 SELECT dongCode " +
+            "                             WHERE dong_code = ( " +
+            "                                                 SELECT dong_code " +
             "                                                   FROM dongcode " +
-            "                                                  WHERE gugunName = :gugunName AND dongName = :dongName " +
+            "                                                  WHERE gugun_name = :gugunName AND dong_name = :dongName " +
             "                                               ) " +
             "                          ) b " +
-            "             ON a.aptCode = b.aptCode " +
-            "          ORDER BY dealDate DESC " +
+            "             ON a.apt_code = b.apt_code " +
+            "          ORDER BY deal_date DESC " +
             "       ) a " +
             ") " +
-            "SELECT aptCode, " +
-            "       dealAmount, " +
-            "       exclusiveArea, " +
-            "       dealDate, " +
-            "       apartmentName, " +
+            "SELECT apt_code as aptCode, " +
+            "       deal_amount as dealAmount, " +
+            "       exclusive_area as exclusiveArea, " +
+            "       deal_date as dealDate, " +
+            "       apartment_name as apartmentName, " +
             "       lng, " +
             "       lat " +
             "  FROM RankedData " +
