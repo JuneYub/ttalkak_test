@@ -4,12 +4,10 @@ import com.ssafy.happyhouse.entity.house.HouseDeal;
 import com.ssafy.happyhouse.request.AddressName;
 import com.ssafy.happyhouse.response.MapGugunMarkerInfo;
 import com.ssafy.happyhouse.response.MapMarkerInfo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Map;
 
-@Mapper
 public interface HouseMapper {
 
     // 동 번호로 아파트 거래 내역을 조회

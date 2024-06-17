@@ -1,16 +1,11 @@
 package com.ssafy.happyhouse.mapper;
 
 import com.ssafy.happyhouse.entity.member.Member;
-import com.ssafy.happyhouse.global.token.JwtTokenDto;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Mapper
 public interface MemberMapper {
 
     List<Member> findAll();

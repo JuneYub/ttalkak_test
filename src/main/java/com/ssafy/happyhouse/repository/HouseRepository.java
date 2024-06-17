@@ -1,10 +1,8 @@
 package com.ssafy.happyhouse.repository;
 
 import com.ssafy.happyhouse.dto.house.HouseDetailDto;
-import com.ssafy.happyhouse.entity.house.House;
-import com.ssafy.happyhouse.response.MapGugunMarkerInfo;
+import com.ssafy.happyhouse.entity.house.HouseInfo;
 import com.ssafy.happyhouse.response.MapGugunMarkerInfoProjection;
-import com.ssafy.happyhouse.response.MapMarkerInfo;
 import com.ssafy.happyhouse.response.MapMarkerInfoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,15 +10,15 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface HouseRepository extends JpaRepository<House, Long> {
-    @Query("SELECT new com.ssafy.happyhouse.dto.house.HouseDetailDto.ByDong(" +
+public interface HouseRepository extends JpaRepository<HouseInfo, Long> {
+    @Query("SELECT new com.ssafy.happyhouse.dto.house.HouseDetailDto$ByDong(" +
             "a.aptCode," +
             "a.apartmentName," +
             "a.buildYear," +
             "REPLACE(b.dealAmount, ',', '')," +
             "a.jibun," +
             "b.floor," +
-            "DATE(CONCAT(b.dealYear, '-', LPAD(b.dealMonth, 2, '0'), '-', b.dealDay))," +
+            "CAST(DATE(CONCAT(b.dealYear, '-', LPAD(b.dealMonth, 2, '0'), '-', b.dealDay)) AS LocalDate) ," +
             "(b.area / 3.3057))" +
             "FROM HouseInfo a " +
             "JOIN a.houseDeals b " +
@@ -28,7 +26,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
             "ORDER BY CAST(CONCAT(b.dealYear, '-', LPAD(b.dealMonth, 2, '0'), '-', b.dealDay) AS LocalDate) DESC")
     List<HouseDetailDto.ByDong> findHouseListByDongCode(@Param("dongCode") String dongCode);
 
-    @Query("SELECT new com.ssafy.happyhouse.dto.house.HouseDetailDto.ByAptcode(" +
+    @Query("SELECT new com.ssafy.happyhouse.dto.house.HouseDetailDto$ByAptcode(" +
             "a.aptCode, " +
             "a.apartmentName, " +
             "a.buildYear, " +

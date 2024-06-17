@@ -13,7 +13,7 @@ public class HouseDetailDto {
     public static class ByDong {
         private Long aptCode;
         private String apartmentName;
-        private String buildYear;
+        private int buildYear;
         private String dealAmount;
         private String jibun;
         private String floor;
@@ -27,7 +27,7 @@ public class HouseDetailDto {
     public static class ByAptcode {
         private Long aptCode;
         private String apartmentName;
-        private String buildYear;
+        private int buildYear;
         private String lng;
         private String lat;
         private String dealAmount;

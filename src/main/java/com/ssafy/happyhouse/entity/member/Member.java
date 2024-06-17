@@ -42,6 +42,7 @@ public class Member {
     private Integer price;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @NotNull
