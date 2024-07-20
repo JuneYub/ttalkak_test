@@ -1,5 +1,9 @@
 # 뉴집스
 
+###  시연영상
+
+https://drive.google.com/file/d/1p1TK3JrFktqiw12NUIojjXx4AmyI_yFM/view?usp=drive_link
+
 ###  🙋‍♀️ 프로젝트 진행 기간
 --------------------------
 2024.04.29 - 2024.05.23 (24일)
@@ -15,4 +19,6 @@
 | 2024-06-02 ~ 2024-06-09 | 마이바티스 JPA로 변경 |
 
 ![image](https://github.com/user-attachments/assets/227b9c71-3b93-4d7d-bbea-c49be11d2b38)
+
+
 
