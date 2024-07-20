@@ -13,3 +13,6 @@
 | 일정               | 내용            |
 |------------------|---------------|
 | 2024-06-02 ~ 2024-06-09 | 마이바티스 JPA로 변경 |
+
+![image](https://github.com/user-attachments/assets/227b9c71-3b93-4d7d-bbea-c49be11d2b38)
+
