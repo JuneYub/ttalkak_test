@@ -18,7 +18,4 @@ https://drive.google.com/file/d/1p1TK3JrFktqiw12NUIojjXx4AmyI_yFM/view?usp=drive
 |------------------|---------------|
 | 2024-06-02 ~ 2024-06-09 | 마이바티스 JPA로 변경 |
 
-![image](https://github.com/user-attachments/assets/227b9c71-3b93-4d7d-bbea-c49be11d2b38)
-
-
-
+![image](https://github.com/user-attachments/assets/663a0317-2c9a-4152-9840-35523f7ef93b)
