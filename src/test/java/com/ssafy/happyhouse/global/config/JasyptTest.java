@@ -18,7 +18,7 @@ public class JasyptTest {
         encryptor.setPassword(password);
         encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
 
-        String content = "token";
+        String content = "jdbc:mysql://database.ttalkak.com:13875/ab246f5899?useSSL=false";
         String encryptedContent = encryptor.encrypt(content);
         String decryptedContent = encryptor.decrypt(encryptedContent);
 
